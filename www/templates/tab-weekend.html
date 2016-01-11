@@ -1,0 +1,41 @@
+<ion-view view-title="Weekend Schedule">
+  <ion-content>
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="loadData()">
+    </ion-refresher>
+
+
+
+    <div class="list" ng-class="{'animated infinite tada': !data.dest}">
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Destination
+        </div>
+        <select ng-model="data.dest">
+          <option value="Skopje">Skopje</option>
+          <option value="Struga">Struga</option>
+          <option value="Resen">Resen</option>
+          <option value="Bitola">Bitola</option>
+        </select>
+      </label>
+    </div>
+    <div ng-repeat="destination in filtered = (destinations | orderBy: ['id','time'] |
+        filter: {dest: data.dest})" class="card trip">
+      <div class="item item-divider">
+        {{destination.dest}}
+      </div>
+      <div class="item item-text-wrap">
+        {{destination.transporter}} - {{destination.time}} - {{destination.day}}
+      </div>
+    </div>
+
+    <div ng-if="filtered.length == 0" class="text-center">
+      There is no data for the selected filter
+    </div>
+    <ion-infinite-scroll
+            on-infinite="loadData()"
+            distance="1%">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>
